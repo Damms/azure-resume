@@ -2,6 +2,7 @@ import os
 import azure.functions as func
 import logging
 from azure.cosmos import CosmosClient, exceptions
+import json
 
 app = func.FunctionApp()
 
@@ -32,7 +33,11 @@ def increment_counter(req: func.HttpRequest) -> func.HttpResponse:
         # Save the updated item back to the container
         container.upsert_item(item)
 
-        return func.HttpResponse(f"Counter value incremented to {new_value}", status_code=200)
+        return func.HttpResponse(
+            json.dumps({"count": new_value}),
+            mimetype="application/json",
+            status_code=200
+        )
 
     except exceptions.CosmosHttpResponseError as e:
         logging.error(f"An error occurred: {e}")

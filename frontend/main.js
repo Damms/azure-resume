@@ -2,7 +2,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     getVistitCount();
 });
 
-const functionApi = '';
+const functionApi = 'http://localhost:7071/api/increment-counter';
 
 const getVistitCount = () => {
     let count = 0;
