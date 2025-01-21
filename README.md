@@ -14,7 +14,7 @@ I created this project to complete the cloud resume challenge which is designed 
 ### Skills Learned
 
 - Cloud Architecture: Designing and deploying a fully-functional, serverless application on Azure.
-- Azure Services: Setting up and configuring key services like Azure Storage, Azure CDN, Functions, Cosmos DB, Azure DNS
+- Azure Services: Setting up and configuring key services like Azure Storage, Azure CDN, Azure Function Apps, Azure CosmosDB, Azure DNS
 - CI/CD Pipeline: Implementing automated builds, and deployments through GitHub Actions.
 - Full-Stack Development: Creating a modern, responsive frontend (HTML/CSS/JS) backed by serverless APIs.
 - Security & Access Control: Managing roles, permissions, and secure deployments in Azure.
@@ -24,7 +24,7 @@ I created this project to complete the cloud resume challenge which is designed 
 
 - Azure Portal
 - Visual Studio
-- Programming: Python, HTML, CSS, JS, YML
+- Programming: Python, HTML, CSS, JS
 
 ### Prerequisites 
 
@@ -53,11 +53,11 @@ Now I configured Azure CDN as an endpoint for my static website. I am using Azur
 
 ### Step 4 - Point a custom DNS domain name to your Azure CDN endpoint
 
-Now I have a Azure CDN endpoint for the static website I will add a DNS CNAME record to point subdomains to the Azure CDN endpoint. For experience I moved my domain registry to use Azure DNS Zones and created the DNS records there, however this is optional you can use your current domain registrar if you prefer.
+Now I have a Azure CDN endpoint for the static website I will add a DNS CNAME record to point subdomains to the Azure CDN endpoint. For experience I moved my domain registry to Azure DNS Zones and created the DNS records there, however this is optional you can use your current domain registrar if you prefer.
 
 ![image](https://github.com/user-attachments/assets/e89852f3-9da8-417a-8f1a-a56012b72cce)
 
-With the CNAME record pointing to my CDN endpoint I can also add a custom domain to my CDN endpoint and enable HTTPS traffic
+With the CNAME record pointing to my CDN endpoint I can also add a custom domain to my CDN endpoint and enable HTTPS traffic.
 
 ![image](https://github.com/user-attachments/assets/9458e7c8-27da-45e8-9f7f-9de5cf162e4d)
 
@@ -69,11 +69,11 @@ Create a Azure CosmosDB to store the view count for our webpage. Steps followed 
 
 ### Step 6 - Create API using Azure Function App to get and increment view count stored in CosmosDB
 
-Now it's time to create Azure function. For this I used visual studio extension "Azure Function". In Visual Studio select the Azure Functions extension and create a new Azure function and select your language of choice, I selected Python.
+Now it's time to create an Azure function. For this I used visual studio extension "Azure Function". In Visual Studio select the Azure Functions extension and create a new Azure function and select your language of choice, I selected Python.
 
 ![image](https://github.com/user-attachments/assets/0bbbd453-cb7f-422b-ba75-cd5cbce3cd8e)
 
-Note: For Python I had issues setting this up using new Python versions so I installed Python 3.9 and it worked :)
+*Note: For Python I had issues setting this up using new Python versions so I installed Python 3.9 and it worked :)*
 
 Essentially what we want our function app to do is connect to the CosmosDB, retrieve the view count, increment the view count and store the new value back in CosmosDB. There are many ways to accomplish this but below is my Python code for completing this
 
@@ -124,14 +124,14 @@ def increment_counter(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("An error occurred while processing the request.", status_code=500)
 ```
 
-With a working function to deploy this to Azure go into Visual Studio code, right click on your Azure Function local project and select deploy to Azure.
+With a working function I now need to deploy this to Azure. To do this go into Visual Studio code, right click on your Azure Function local project and select deploy to Azure.
 
 ![image](https://github.com/user-attachments/assets/d462c120-16f6-4ab2-8ff6-a3a81a9f4b2a)
 
 
 ### Step 7 - Write some JavaScript to call Azure function and display view count on your website
 
-With a deployed funcation app now I can write some JS code to call the function app to get the view count and display that on my website. Again there's many ways to achieve this, below is my way assuming there is an html element with the id of 'counter' in index.html
+With a deployed funcation app now I can write some JS code to call the function app, to get the view count and display that on my website. Again there's many ways to achieve this, below is the way I implemented assuming there is an html element with the id of 'counter' in index.html.
 
 ```
 window.addEventListener('DOMContentLoaded', (event) => {
@@ -165,6 +165,8 @@ name: Blob storage website CI
 on:
     push:
         branches: [ main ]
+        paths:
+            - 'frontend/**'
 
 jobs:
   build:
@@ -201,11 +203,14 @@ Simillar to the front end I used Github actions to push my Azure function to Azu
 name: Deploy Python project to Azure Function App
 
 on:
-  [push]
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'your-app-name'   # set this to your function app name on Azure
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'       # set this to the path to your function app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend'       # set this to the path to your function app project, defaults to the repository root
   PYTHON_VERSION: '3.9'                     # set this to the python version to use (e.g. '3.6', '3.7', '3.8')
 
 jobs:
@@ -224,7 +229,7 @@ jobs:
     - name: 'Resolve Project Dependencies Using Pip'
       shell: bash
       run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/api'
         python -m pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
         popd
@@ -234,7 +239,7 @@ jobs:
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/api
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
         scm-do-build-during-deployment: true
         enable-oryx-build: true
