@@ -160,14 +160,11 @@ const getVistitCount = () => {
 Now to setup the CI/CD for the front end I used Github actions to push my files to my Azure storage account whenever I push to the main branch from my frontend folder. Below is my yml file to achieve this which is based of the [MS Learn guide](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-static-site-github-actions?tabs=userlevel)
 
 ```
-name: deploy_frontend
-# Deploys when push is made from frontend folder
+name: Blob storage website CI
 
 on:
     push:
         branches: [ main ]
-        paths:
-            - 'frontend/**'
 
 jobs:
   build:
@@ -182,12 +179,12 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az storage blob upload-batch --account-name crcjaedynad --auth-mode key -d '$web' -s frontend/ --overwrite
+            az storage blob upload-batch --account-name <STORAGE_ACCOUNT_NAME> --auth-mode key -d '$web' -s .
     - name: Purge CDN endpoint
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az cdn endpoint purge --content-paths  "/*" --profile-name "crcjaedynad" --name "crcjaedynatinadamms" --resource-group "CloudResumeChallenge"
+           az cdn endpoint purge --content-paths  "/*" --profile-name "CDN_PROFILE_NAME" --name "CDN_ENDPOINT" --resource-group "RESOURCE_GROUP"
 
   # Azure logout
     - name: logout
@@ -201,17 +198,14 @@ jobs:
 Simillar to the front end I used Github actions to push my Azure function to Azure whenever I push to the main branch from my backend folder. Below is my yml file to achieve this which is based of the [MS Learn guide](https://learn.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions?tabs=linux%2Cdotnet&pivots=method-template)
 
 ```
-name: deploy_backend
+name: Deploy Python project to Azure Function App
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'backend/**'
+  [push]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'GetResumeCounterjatinadamms'   # set this to your function app name on Azure
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend'       # set this to the path to your function app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_NAME: 'your-app-name'   # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'       # set this to the path to your function app project, defaults to the repository root
   PYTHON_VERSION: '3.9'                     # set this to the python version to use (e.g. '3.6', '3.7', '3.8')
 
 jobs:
@@ -222,11 +216,6 @@ jobs:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v3
 
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
     - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
       uses: actions/setup-python@v4
       with:
@@ -235,7 +224,7 @@ jobs:
     - name: 'Resolve Project Dependencies Using Pip'
       shell: bash
       run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/api'
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         python -m pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
         popd
@@ -245,7 +234,8 @@ jobs:
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/api
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
         scm-do-build-during-deployment: true
         enable-oryx-build: true
 ```
