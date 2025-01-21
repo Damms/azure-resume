@@ -65,7 +65,64 @@ Details steps can be found on the [MS Learn docs](https://learn.microsoft.com/en
 
 ### Step 5 - Create Azure CosmosDB to store view count for your website
 
+Create a Azure CosmosDB to store the view count for our webpage. Steps followed on [MS Learn docs](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/quickstart-portal)
+
 ### Step 6 - Create API using Azure Function App to get and increment view count stored in CosmosDB
+
+Now it's time to create Azure function. For this I used visual studio extension "Azure Function". In Visual Studio select the Azure Functions extension and create a new Azure function and select your language of choice, I selected Python.
+![image](https://github.com/user-attachments/assets/0bbbd453-cb7f-422b-ba75-cd5cbce3cd8e)
+
+Note: For Python I had issues setting this up using new Python versions so I installed Python 3.9 and it worked :)
+
+Essentially what we want our function app to do is connect to the CosmosDB, retrieve the view count, increment the view count and store the new value back in CosmosDB. There are many ways to accomplish this but below is my Python code for completing this
+
+```
+import os
+import azure.functions as func
+import logging
+from azure.cosmos import CosmosClient, exceptions
+import json
+
+app = func.FunctionApp()
+
+# Initialize the Cosmos client using the connection string from environment variables
+connection_string = os.getenv('AzureResumeConnectionString')
+client = CosmosClient.from_connection_string(connection_string)
+
+database_name = "CloudResumeChallengejad"
+container_name = "Counter"
+
+@app.function_name(name="IncrementCounter")
+@app.route(route="increment-counter", auth_level=func.AuthLevel.ANONYMOUS)
+def increment_counter(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.')
+
+    try:
+        database = client.get_database_client(database_name)
+        container = database.get_container_client(container_name)
+
+        # Retrieve the item with id '1'
+        item = container.read_item(item='1', partition_key='1')
+        current_value = item.get('value', 0)
+
+        # Increment the value by 1
+        new_value = current_value + 1
+        item['value'] = new_value
+
+        # Save the updated item back to the container
+        container.upsert_item(item)
+
+        return func.HttpResponse(
+            json.dumps({"count": new_value}),
+            mimetype="application/json",
+            status_code=200
+        )
+
+    except exceptions.CosmosHttpResponseError as e:
+        logging.error(f"An error occurred: {e}")
+        return func.HttpResponse("An error occurred while processing the request.", status_code=500)
+```
+
 
 ### Step 7 - Write some JavaScript to call Azure function and display view count on your website
 
