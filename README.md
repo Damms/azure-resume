@@ -70,6 +70,7 @@ Create a Azure CosmosDB to store the view count for our webpage. Steps followed 
 ### Step 6 - Create API using Azure Function App to get and increment view count stored in CosmosDB
 
 Now it's time to create Azure function. For this I used visual studio extension "Azure Function". In Visual Studio select the Azure Functions extension and create a new Azure function and select your language of choice, I selected Python.
+
 ![image](https://github.com/user-attachments/assets/0bbbd453-cb7f-422b-ba75-cd5cbce3cd8e)
 
 Note: For Python I had issues setting this up using new Python versions so I installed Python 3.9 and it worked :)
@@ -122,7 +123,9 @@ def increment_counter(req: func.HttpRequest) -> func.HttpResponse:
         logging.error(f"An error occurred: {e}")
         return func.HttpResponse("An error occurred while processing the request.", status_code=500)
 ```
+
 With a working function to deploy this to Azure go into Visual Studio code, right click on your Azure Function local project and select deploy to Azure.
+
 ![image](https://github.com/user-attachments/assets/d462c120-16f6-4ab2-8ff6-a3a81a9f4b2a)
 
 
@@ -151,6 +154,7 @@ const getVistitCount = () => {
     return count;
 }
 ```
+
 ### Step 8 - CI/CD for Front End
 
 ### Step 9 - CI/CD for Back End
