@@ -1,5 +1,5 @@
 # Azure Cloud Resume Challenge
-[Cloud Resume Challenge ](https://cloudresumechallenge.dev/docs/the-challenge/azure/)
+In this project I built out a static website to host my resume in Azure! You can see my website here: https://resume.jaedyndamms.com/
 
 ![image](https://github.com/user-attachments/assets/6440a2fd-3fdd-47cd-afdc-5681805824aa)
 
