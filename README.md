@@ -38,15 +38,15 @@ I created this project to complete the cloud resume challenge which is designed 
 
 ### Step 4 - Point a custom DNS domain name to your Azure CDN endpoint
 
-## Step 5 - Create Azure CosmosDB to store view count for your website
+### Step 5 - Create Azure CosmosDB to store view count for your website
 
-## Step 6 - Create API using Azure Function App to get and increment view count stored in CosmosDB
+### Step 6 - Create API using Azure Function App to get and increment view count stored in CosmosDB
 
-## Step 7 - Write some JavaScript to call Azure function and display view count on your website
+### Step 7 - Write some JavaScript to call Azure function and display view count on your website
 
-## Step 8 - CI/CD for Front End
+### Step 8 - CI/CD for Front End
 
-## Step 9 - CI/CD for Back End
+### Step 9 - CI/CD for Back End
 
 
 
