@@ -6,7 +6,7 @@ import json
 
 app = func.FunctionApp()
 
-# Initialize the Cosmos client using the connection string from environment variables.
+# Initialize the Cosmos client using the connection string from environment variables
 connection_string = os.getenv('AzureResumeConnectionString')
 client = CosmosClient.from_connection_string(connection_string)
 
