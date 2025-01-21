@@ -35,7 +35,16 @@ I created this project to complete the cloud resume challenge which is designed 
 ## Steps
 ### Step 1 - Create Static Website using HTML & CSS
 
+The first step in this challenge is to create your resume using HTML/CSS. Now since this project isn't focused on any UI/UX design it doesn't have to be anything fancy. However if you're like me I wanted it to look nice. There are some great templates online that you can grab and start with, for me I used the template create by the team at [A Cloud Guru](https://github.com/ACloudGuru-Resources/acg-project-azure-resume-starter)
+
 ### Step 2 - Use Azure Storage account to deploy your website as a [Azure Storage static website](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website)
+
+Now that the static website is created I now need to deploy this somewhere so other can see it. I chose to use [Azure Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website).
+
+From Visual Studio you can right click the folder which is hosting your front end and select Deploy to Static Website via Azure Storage and go through the configuration steps.
+
+![image](https://github.com/user-attachments/assets/8a64b6b8-f6c6-4461-95d3-002e8f9a4368)
+
 
 ### Step 3 - Configure [Azure CDN](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-custom-domain-name?tabs=azure-portal#map-a-custom-domain-with-https-enabled) to serve your static website and enable HTTPS for security.
 
