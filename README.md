@@ -53,7 +53,7 @@ Now I configured Azure CDN as an endpoint for my static website. I am using Azur
 
 ### Step 4 - Point a custom DNS domain name to your Azure CDN endpoint
 
-Now I have a Azure CDN endpoint for the static website I will add a DNS CNAME record to point subdomains to the Azure CDN endpoint. For experience I moved my domain registry to use Azure DNS Zones and created the DNS records there, however this is optional you can use your current domain registar if you prefer.
+Now I have a Azure CDN endpoint for the static website I will add a DNS CNAME record to point subdomains to the Azure CDN endpoint. For experience I moved my domain registry to use Azure DNS Zones and created the DNS records there, however this is optional you can use your current domain registrar if you prefer.
 
 ![image](https://github.com/user-attachments/assets/e89852f3-9da8-417a-8f1a-a56012b72cce)
 
