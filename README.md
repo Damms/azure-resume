@@ -46,7 +46,7 @@ From Visual Studio you can right click the folder which is hosting your front en
 ![image](https://github.com/user-attachments/assets/8a64b6b8-f6c6-4461-95d3-002e8f9a4368)
 
 
-### Step 3 - Configure [Azure CDN](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-custom-domain-name?tabs=azure-portal#map-a-custom-domain-with-https-enabled) to serve your static website and enable HTTPS for security.
+### Step 3 - Configure Azure CDN to serve your static website and enable HTTPS for security.
 
 Now I configured Azure CDN as an endpoint for my static website. I am using Azure CDN as it uses POPs located all around the world to cache and serve my website content, improving the performance of the website. Step by steps can be found on the [MS Learn docs](https://learn.microsoft.com/en-us/azure/cdn/cdn-create-new-endpoint)
 
