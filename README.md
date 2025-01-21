@@ -1,6 +1,9 @@
 # Azure Cloud Resume Challenge
 [Cloud Resume Challenge ](https://cloudresumechallenge.dev/docs/the-challenge/azure/)
 
+![image](https://github.com/user-attachments/assets/6440a2fd-3fdd-47cd-afdc-5681805824aa)
+
+
 ## Objective
 I created this project to complete the cloud resume challenge which is designed to demonstrate my full-stack cloud skills by creating a resume site hosted on Azure. Key elements of my solution include:
 - Azure Static Web App: Hosts my resume as a static website.
