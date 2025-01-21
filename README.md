@@ -89,8 +89,8 @@ app = func.FunctionApp()
 connection_string = os.getenv('AzureResumeConnectionString')
 client = CosmosClient.from_connection_string(connection_string)
 
-database_name = "CloudResumeChallengejad"
-container_name = "Counter"
+database_name = <DB-NAME>
+container_name = <CONTAINER-NAME>
 
 @app.function_name(name="IncrementCounter")
 @app.route(route="increment-counter", auth_level=func.AuthLevel.ANONYMOUS)
@@ -122,10 +122,35 @@ def increment_counter(req: func.HttpRequest) -> func.HttpResponse:
         logging.error(f"An error occurred: {e}")
         return func.HttpResponse("An error occurred while processing the request.", status_code=500)
 ```
+With a working function to deploy this to Azure go into Visual Studio code, right click on your Azure Function local project and select deploy to Azure.
+![image](https://github.com/user-attachments/assets/d462c120-16f6-4ab2-8ff6-a3a81a9f4b2a)
 
 
 ### Step 7 - Write some JavaScript to call Azure function and display view count on your website
 
+With a deployed funcation app now I can write some JS code to call the function app to get the view count and display that on my website. Again there's many ways to achieve this, below is my way assuming there is an html element with the id of 'counter' in index.html
+
+```
+window.addEventListener('DOMContentLoaded', (event) => {
+    getVistitCount();
+});
+
+const functionApi = '<FUNCTION-APP-ENDPOINT>;
+
+const getVistitCount = () => {
+    let count = 0;
+    fetch(functionApi).then(response => {
+        return response.json();
+    }).then(response => {
+        console.log('Website called function API.');
+        count = response.count;
+        document.getElementById('counter').innerText = count;
+    }).catch(err => {
+        console.error(err);
+    });
+    return count;
+}
+```
 ### Step 8 - CI/CD for Front End
 
 ### Step 9 - CI/CD for Back End
