@@ -6,16 +6,16 @@ In this project I built out a static website to host my resume in Azure! You can
 
 ## Objective
 I created this project to complete the cloud resume challenge which is designed to demonstrate my full-stack cloud skills by creating a resume site hosted on Azure. Key elements of my solution include:
-- Azure Static Web App: Hosts my resume as a static website.
+- Azure Storage: Hosts my resume as a static website.
 - Serverless Backend: Azure Functions handle backend logic, such as a visitor count.
-- Database Integration: Visitor counts and other data stored/retrieved from Azure Storage or Cosmos DB.
+- Database Integration: Visitor counts and other data stored/retrieved fro Cosmos DB.
 - CI/CD Pipeline: Automated builds and deployments via GitHub Actions
 
 ### Skills Learned
 
 - Cloud Architecture: Designing and deploying a fully-functional, serverless application on Azure.
-- Azure Services: Setting up and configuring key services like Azure Static Web Apps, Functions, Cosmos DB, Azure DNS, Azure Storage, Azure CDN
-- CI/CD Pipeline: Implementing automated testing, builds, and deployments through GitHub Actions.
+- Azure Services: Setting up and configuring key services like Azure Storage, Azure CDN, Functions, Cosmos DB, Azure DNS
+- CI/CD Pipeline: Implementing automated builds, and deployments through GitHub Actions.
 - Full-Stack Development: Creating a modern, responsive frontend (HTML/CSS/JS) backed by serverless APIs.
 - Security & Access Control: Managing roles, permissions, and secure deployments in Azure.
 - Continuous Learning: Strengthening problem-solving and debugging skills through hands-on cloud project work.
